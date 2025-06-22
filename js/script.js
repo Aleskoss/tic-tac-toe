@@ -1,7 +1,32 @@
 const gameBoard = (function() {
   const gameBoard = []
   const getGameBoard = () => {return gameBoard}
-  return {getGameBoard}
+  const getCountX = () => {return gameBoard.reduce((accumulator,item) => {
+    if(item === "X"){
+     accumulator += 1
+    }
+    return accumulator
+  },0)}
+  const getCountO = () => {
+    return gameBoard.reduce((accumulator,item) => {
+    if(item === "O"){
+     accumulator += 1
+    }
+    return accumulator
+  },0)}
+  const checkInput = () => {
+    const square = document.querySelectorAll('.gameboard-div')
+    square.forEach(item => item.addEventListener("click",() => {
+      if(getCountX() >= getCountO()){
+        item.textContent = "O"
+        gameBoard[item.id] = "O"
+      }else if(getCountO() > getCountX()){
+        item.textContent = "X"
+        gameBoard[item.id] = "X"
+      }
+    }))
+  }
+  return {getGameBoard,checkInput,getCountO,getCountX}
 })()
 
 function getPlayers(playerOne,playerTwo){
@@ -31,10 +56,10 @@ function checkWinner(){
 
 const render = (function(){
   const renderBoard = () => {
-    const board = document.querySelector(".gameBoard")
+    const board = document.querySelector(".gameboard")
     for(let i = 0; i < 9; i++){
-      const square = document.createElement("input")
-      square.type = "checkbox"
+      const square = document.createElement("div")
+      square.classList = "gameboard-div"
       square.id = i
       board.appendChild(square)
       }
@@ -44,3 +69,4 @@ const render = (function(){
 const players = getPlayers("Aleš","Tony")
 const game = checkWinner()
 render.renderBoard()
+gameBoard.checkInput()

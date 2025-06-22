@@ -8,15 +8,18 @@
 :root{
   --blue:#00A1E4;
 }
-.gameBoard{
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.gameboard{
   display: grid;
   grid-template: repeat(3,100px)/repeat(3,100px);
 }
-input[type="checkbox"]{
-  appearance: none;
+.gameboard-div{
   border: 1px solid var(--blue);
-}
-input[type="checkbox"]:checked::before{
-  content: "O";
   font-size: 100px;
+  text-align: center;
 }
