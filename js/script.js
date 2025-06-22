@@ -18,13 +18,20 @@ const gameBoard = (function() {
   const checkInput = () => {
     const square = document.querySelectorAll('.gameboard-div')
     square.forEach(item => item.addEventListener("click",() => {
+      const fillGameBoard = () => {
+        gameBoard.splice(0,gameBoard.length)
+        square.forEach(item => {
+        gameBoard.push(item.textContent)
+      })
+    }
       if(getCountX() >= getCountO()){
         item.textContent = "O"
-        gameBoard[item.id] = "O"
+        fillGameBoard()
       }else if(getCountO() > getCountX()){
         item.textContent = "X"
-        gameBoard[item.id] = "X"
+        fillGameBoard()
       }
+      console.log(gameBoard.length)
       if(gameState.checkGame() === "X" || gameState.checkGame() === "O"){
         render.outputWinner()
         gameBoard.splice(0,gameBoard.length)
@@ -35,11 +42,6 @@ const gameBoard = (function() {
   }
   return {getGameBoard,checkInput}
 })()
-
-function getPlayers(playerOne,playerTwo){
-  const displayPlayers = () => {console.log(`${playerOne} has O - ${playerTwo} has X`)}
-  return {displayPlayers}
-}
 
 function checkWinner(){
   const checkGame = () => {
@@ -68,22 +70,35 @@ const render = (function(){
       const square = document.createElement("button")
       square.classList = "gameboard-div"
       square.type = "button"
-      square.id = i
       board.appendChild(square)
       }
       gameBoard.checkInput()
     }
+    let playerOneName = "default"
+    let playerTwoName = "default2"
+    const displayPlayers = () => {
+    const playerOne = document.querySelector('#player-one')
+    const playerTwo = document.querySelector('#player-two')
+    const startBtn = document.querySelector('#start-btn')
+    const playerNamesOutput = document.querySelector('.player-names')
+    startBtn.addEventListener("click", () => {
+      renderBoard()
+      playerOneName = playerOne.value
+      playerTwoName = playerTwo.value
+      playerNamesOutput.textContent = `${playerOneName} has O and ${playerTwoName} has X` 
+    })
+  }
   const outputWinner = () => {
    const winnerOutput = document.querySelector('p')
    const gameState = checkWinner()
    if(gameState.checkGame() === "O"){
-      winnerOutput.textContent = "Player One wins"
+      winnerOutput.textContent = `${playerOneName} Wins`
     }else if(gameState.checkGame() === "X"){
-      winnerOutput.textContent =  "Player Two wins"
+      winnerOutput.textContent =  `${playerTwoName} Wins`
     }
   }
-    return {renderBoard,outputWinner}
+    return {renderBoard,outputWinner,displayPlayers}
 })()
-const players = getPlayers("Aleš","Tony")
 const game = checkWinner()
 render.renderBoard()
+render.displayPlayers()
