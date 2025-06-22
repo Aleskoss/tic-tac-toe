@@ -1,0 +1,22 @@
+*,
+*::after,
+*::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root{
+  --blue:#00A1E4;
+}
+.gameBoard{
+  display: grid;
+  grid-template: repeat(3,100px)/repeat(3,100px);
+}
+input[type="checkbox"]{
+  appearance: none;
+  border: 1px solid var(--blue);
+}
+input[type="checkbox"]:checked::before{
+  content: "O";
+  font-size: 100px;
+}

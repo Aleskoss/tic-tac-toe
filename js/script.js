@@ -9,8 +9,8 @@ function getPlayers(playerOne,playerTwo){
   return {displayPlayers}
 }
 
-function checkGame(){
-  const checkLogic = () => {
+function checkWinner(){
+  const checkGame = () => {
     const indexCheck = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
     const checkedArr = []
     for(let i = 0; i < 8; i++){
@@ -26,7 +26,21 @@ function checkGame(){
       return "Continue"
     }
 }
- return {checkLogic}
+ return {checkGame}
 }
+
+const render = (function(){
+  const renderBoard = () => {
+    const board = document.querySelector(".gameBoard")
+    for(let i = 0; i < 9; i++){
+      const square = document.createElement("input")
+      square.type = "checkbox"
+      square.id = i
+      board.appendChild(square)
+      }
+    }
+    return {renderBoard}
+})()
 const players = getPlayers("Aleš","Tony")
-const game = checkGame()
+const game = checkWinner()
+render.renderBoard()
