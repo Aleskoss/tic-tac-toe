@@ -1,5 +1,5 @@
 const gameBoard = (function() {
-  const gameBoard = ["O","X","O","X","O","O","O","X","O"]
+  const gameBoard = []
   const getGameBoard = () => {return gameBoard}
   return {getGameBoard}
 })()
@@ -9,17 +9,24 @@ function getPlayers(playerOne,playerTwo){
   return {displayPlayers}
 }
 
-function checkGameLogic(){
+function checkGame(){
   const checkLogic = () => {
-    [a,b,c,d,e,f,g,h,i] = gameBoard.getGameBoard()
-    let valueCheck = (value) => value === "O"
-    if([a,b,c].every(valueCheck) || [d,e,f].every(valueCheck) || [g,h,i].every(valueCheck)){
-      return "Player One wins"
-    }else{
-      return "Player Two wins"
-    }
+    const indexCheck = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+    const checkedArr = []
+    for(let i = 0; i < 8; i++){
+    checkedArr.push(indexCheck[i].reduce((accumulator,currentValue) => {
+      return accumulator + gameBoard.getGameBoard()[currentValue]
+    },""))
   }
-  return {checkLogic}
+    if(checkedArr.includes("OOO")){
+      return "Player One wins"
+    }else if(checkedArr.includes("XXX")){
+      return "Player Two wins"
+    }else{
+      return "Continue"
+    }
+}
+ return {checkLogic}
 }
 const players = getPlayers("Aleš","Tony")
-const logicCheck = checkGameLogic()
+const game = checkGame()
