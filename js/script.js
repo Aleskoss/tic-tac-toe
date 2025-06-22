@@ -14,6 +14,7 @@ const gameBoard = (function() {
     }
     return accumulator
   },0)}
+  const gameState = checkWinner()
   const checkInput = () => {
     const square = document.querySelectorAll('.gameboard-div')
     square.forEach(item => item.addEventListener("click",() => {
@@ -24,9 +25,15 @@ const gameBoard = (function() {
         item.textContent = "X"
         gameBoard[item.id] = "X"
       }
+      if(gameState.checkGame() === "X" || gameState.checkGame() === "O"){
+        render.outputWinner()
+        gameBoard.splice(0,gameBoard.length)
+        render.renderBoard()
+      }
+      item.disabled = true
     }))
   }
-  return {getGameBoard,checkInput,getCountO,getCountX}
+  return {getGameBoard,checkInput}
 })()
 
 function getPlayers(playerOne,playerTwo){
@@ -44,29 +51,39 @@ function checkWinner(){
     },""))
   }
     if(checkedArr.includes("OOO")){
-      return "Player One wins"
+      return "O"
     }else if(checkedArr.includes("XXX")){
-      return "Player Two wins"
-    }else{
-      return "Continue"
+      return "X"
     }
+  }
+   return {checkGame}
 }
- return {checkGame}
-}
-
 const render = (function(){
   const renderBoard = () => {
     const board = document.querySelector(".gameboard")
+    while(board.lastChild){
+      board.removeChild(board.lastChild)
+    }
     for(let i = 0; i < 9; i++){
-      const square = document.createElement("div")
+      const square = document.createElement("button")
       square.classList = "gameboard-div"
+      square.type = "button"
       square.id = i
       board.appendChild(square)
       }
+      gameBoard.checkInput()
     }
-    return {renderBoard}
+  const outputWinner = () => {
+   const winnerOutput = document.querySelector('p')
+   const gameState = checkWinner()
+   if(gameState.checkGame() === "O"){
+      winnerOutput.textContent = "Player One wins"
+    }else if(gameState.checkGame() === "X"){
+      winnerOutput.textContent =  "Player Two wins"
+    }
+  }
+    return {renderBoard,outputWinner}
 })()
 const players = getPlayers("Aleš","Tony")
 const game = checkWinner()
 render.renderBoard()
-gameBoard.checkInput()
