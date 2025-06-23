@@ -6,27 +6,42 @@
   box-sizing: border-box;
 }
 :root{
-  --blue:#00A1E4;
+  --blue:#247BA0;
+  --grey: #605F5E;
+  --dark-blue:#0A2463;
 }
 body{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  display: grid;
   height: 100vh;
   gap: 20px;
+  grid-template-rows: 1fr 10fr;
+}
+.header{
+  background-color: var(--dark-blue) ;
+  color: var(--grey);
+  text-align: center;
+  padding-top: 20px;
+}
+.content{
+  text-align: center;
+  width: 300px;
+  justify-self: center;
+  align-self: center;
 }
 .gameboard{
   display: grid;
   grid-template: repeat(3,100px)/repeat(3,100px);
+  margin: 10px 0px;
+  align-self: center;
 }
 .gameboard-div{
   border: 1px solid var(--blue);
   font-size: 100px;
   text-align: center;
 }
-.input{
+.inputs{
   display: grid;
-  gap: 40px;
-  grid-template-rows: 40px 40px;
+  gap: 4px;
+  grid-template-rows: 20px 20px;
+  margin-bottom: 10px;
 }

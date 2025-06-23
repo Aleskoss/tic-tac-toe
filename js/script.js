@@ -91,6 +91,7 @@ const render = (function(){
     getSquares().forEach(item => item.addEventListener("click",() => {
       decideNextPlayer(item)
       gameBoard.fillGameBoard(getSquares())
+      outputWinner()
       gameBoard.resetGameBoard()
       item.disabled = true
     }))
@@ -111,15 +112,16 @@ const render = (function(){
   }
   const outputWinner = () => {
    const winnerOutput = document.querySelector('p')
-   const gameState = checkWinner()
-   if(gameState.checkGame() === "O"){
+   const gameState = checkWinner().checkGame()
+   if(gameState === "O"){
       winnerOutput.textContent = `${playerOneName} Wins`
-    }else if(gameState.checkGame() === "X"){
+    }else if(gameState === "X"){
       winnerOutput.textContent =  `${playerTwoName} Wins`
-    }
+    }else if(gameState !== "O" || gameState !== "X"){
+      winnerOutput.textContent = ""
+   }
   }
     return {renderBoard,decideNextPlayer,displayPlayers,getSquares,checkInput,outputWinner}
 })()
-const game = checkWinner()
 render.renderBoard()
 render.displayPlayers()
