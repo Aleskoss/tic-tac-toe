@@ -14,33 +14,22 @@ const gameBoard = (function() {
     }
     return accumulator
   },0)}
-  const gameState = checkWinner()
-  const checkInput = () => {
-    const square = document.querySelectorAll('.gameboard-div')
-    square.forEach(item => item.addEventListener("click",() => {
-      const fillGameBoard = () => {
+  const fillGameBoard = (square) => {
         gameBoard.splice(0,gameBoard.length)
         square.forEach(item => {
         gameBoard.push(item.textContent)
       })
     }
-      if(getCountX() >= getCountO()){
-        item.textContent = "O"
-        fillGameBoard()
-      }else if(getCountO() > getCountX()){
-        item.textContent = "X"
-        fillGameBoard()
-      }
-      console.log(gameBoard.length)
-      if(gameState.checkGame() === "X" || gameState.checkGame() === "O"){
-        render.outputWinner()
-        gameBoard.splice(0,gameBoard.length)
-        render.renderBoard()
-      }
-      item.disabled = true
-    }))
+  const gameState = checkWinner()
+  const resetGameBoard = () => {
+    if(gameState.checkGame() === "X" || gameState.checkGame() === "O" || !(gameBoard.includes(""))){
+          render.outputWinner()
+          gameBoard.splice(0,gameBoard.length)
+          render.renderBoard()
+    }
   }
-  return {getGameBoard,checkInput}
+  const events = ["click","mouseover"]
+  return {getGameBoard,getCountO,getCountX,fillGameBoard,resetGameBoard}
 })()
 
 function checkWinner(){
@@ -72,10 +61,12 @@ const render = (function(){
       square.type = "button"
       board.appendChild(square)
       }
-      gameBoard.checkInput()
+      checkInput()
+      hoverEffect()
+      hoverEffectReset()
     }
-    let playerOneName = "default"
-    let playerTwoName = "default2"
+    let playerOneName = "Player1"
+    let playerTwoName = "Player2"
     const displayPlayers = () => {
     const playerOne = document.querySelector('#player-one')
     const playerTwo = document.querySelector('#player-two')
@@ -88,6 +79,36 @@ const render = (function(){
       playerNamesOutput.textContent = `${playerOneName} has O and ${playerTwoName} has X` 
     })
   }
+  const decideNextPlayer = (square) => {
+      if(gameBoard.getCountX() >= gameBoard.getCountO()){
+          square.textContent = "O"
+        }else if(gameBoard.getCountO() > gameBoard.getCountX()){
+          square.textContent = "X"
+        }
+      }
+  const getSquares = () => { return document.querySelectorAll('.gameboard-div')}
+  const checkInput = () => {
+    getSquares().forEach(item => item.addEventListener("click",() => {
+      decideNextPlayer(item)
+      gameBoard.fillGameBoard(getSquares())
+      gameBoard.resetGameBoard()
+      item.disabled = true
+    }))
+  }
+  const hoverEffect = () => {
+    getSquares().forEach(item => item.addEventListener("mouseover",() => {
+      if(!(item.disabled)){
+      decideNextPlayer(item)
+      }
+    }))
+  }
+  const hoverEffectReset = () => {
+    getSquares().forEach(item => item.addEventListener("mouseout",() => {
+      if(!(item.disabled)){
+      item.textContent = ""
+      }
+    }))
+  }
   const outputWinner = () => {
    const winnerOutput = document.querySelector('p')
    const gameState = checkWinner()
@@ -97,7 +118,7 @@ const render = (function(){
       winnerOutput.textContent =  `${playerTwoName} Wins`
     }
   }
-    return {renderBoard,outputWinner,displayPlayers}
+    return {renderBoard,decideNextPlayer,displayPlayers,getSquares,checkInput,outputWinner}
 })()
 const game = checkWinner()
 render.renderBoard()
