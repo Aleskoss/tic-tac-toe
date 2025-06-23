@@ -74,8 +74,8 @@ const render = (function(){
     const playerNamesOutput = document.querySelector('.player-names')
     startBtn.addEventListener("click", () => {
       renderBoard()
-      playerOneName = playerOne.value
-      playerTwoName = playerTwo.value
+      playerOneName = playerOne.value || "Player1"
+      playerTwoName = playerTwo.value || "Player2"
       playerNamesOutput.textContent = `${playerOneName} has O and ${playerTwoName} has X` 
     })
   }

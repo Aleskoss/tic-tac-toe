@@ -1,3 +1,4 @@
 # tic-tac-toe
 In this project I will showcase the skill I learned in the last lesson, namely Modular pattern, factory functions, scope and closures
 1.Player click on input square, add input to gameBoard at right inder, disable the given checkbox
+This project really taught me a lot about modules and factory function, structure of the code could be done alot better, but overall I am happy with the program I have made, next I have to work on the structure of my modules and functions as well as implement better logic, this project is not a portfolio project so I will leave it as is and maybe revisit it sometimes
